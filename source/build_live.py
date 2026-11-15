@@ -32,7 +32,7 @@ def build(*, refresh_markup: bool = False) -> None:
     template = re.sub(r'<header class="cabin-mark".*?</header>', "", template, flags=re.S)
     template = re.sub(
         r'<div class="welcome" id="welcome">.*?</p>\s*</div>',
-        '<div class="orb-perch"><div class="orb" aria-hidden="true"></div><p>欢迎回来，指挥官。</p></div>',
+        '<div class="orb-perch"><div class="orb" aria-hidden="true"></div><p>ยินดีต้อนรับกลับมา ผู้บัญชาการ</p></div>',
         template, flags=re.S,
     )
     template = template.replace(
@@ -41,18 +41,17 @@ def build(*, refresh_markup: bool = False) -> None:
     )
     template = template.replace(
         '        <nav class="sill-controls mounted"',
-        '        <div class="cabin-pan" tabindex="0" aria-label="左右拖动看窗景，也可用方向键"></div>\n'
+        '        <div class="cabin-pan" tabindex="0" aria-label="ลากซ้าย-ขวาเพื่อชมวิว หรือใช้ปุ่มลูกศรก็ได้"></div>\n'
         '        <nav class="sill-controls mounted"',
         1,
     )
-    template = template.replace("酒馆菜单", "菜单")
-    template = template.replace('id="add-images"', 'id="import-role"').replace("添加演示图", "导入角色")
+    template = template.replace('id="add-images"', 'id="import-role"').replace("เพิ่มรูปตัวอย่าง", "นำเข้าตัวละคร")
     template = re.sub(
         r'(<button[^>]+id="import-role"[^>]*>.*?</button>)',
         lambda match: (
             '<div class="library-actions">' + match[1] +
             '<button class="holo-key" id="close-library" type="button">'
-            '<svg aria-hidden="true"><use href="#i-close"/></svg>关闭</button></div>'
+            '<svg aria-hidden="true"><use href="#i-close"/></svg>ปิด</button></div>'
         ),
         template,
         count=1,
@@ -67,13 +66,13 @@ def build(*, refresh_markup: bool = False) -> None:
     template = template.replace(
         '        </nav>\n\n        <nav class="wall-controls mounted"',
         '            <button class="cabin-key" id="ambient-toggle" type="button" aria-pressed="false">'
-        '<svg aria-hidden="true"><use href="#i-audio"/></svg><span>白噪音</span></button>\n'
+        '<svg aria-hidden="true"><use href="#i-audio"/></svg><span>ไวท์นอยส์</span></button>\n'
         '        </nav>\n\n        <nav class="wall-controls mounted"',
         1,
     )
     template = template.replace(
         '        <div class="setting">\n            <label for="still-mode">',
-        '        <div class="setting"><label for="ambient-volume">白噪音音量</label>'
+        '        <div class="setting"><label for="ambient-volume">ระดับเสียงไวท์นอยส์</label>'
         '<input id="ambient-volume" type="range" min="0" max="100" value="32">'
         '<output id="ambient-level" for="ambient-volume">32%</output></div>\n'
         '        <div class="setting">\n            <label for="still-mode">',
@@ -82,12 +81,12 @@ def build(*, refresh_markup: bool = False) -> None:
     template = template.replace(
         '    </dialog>\n\n    <dialog class="attached-sheet session-sheet"',
         '        <div class="cabin-theme-option">'
-        '<label class="cabin-start-setting" for="cabin-start-route">进入舱室时'
-        '<select id="cabin-start-route"><option value="">上次窗景</option>'
-        '<option value="galaxy">银河巡航</option><option value="rings">环星观景</option>'
-        '<option value="dawn">轨道晨光</option></select></label>'
+        '<label class="cabin-start-setting" for="cabin-start-route">เมื่อเข้าห้องโดยสาร'
+        '<select id="cabin-start-route"><option value="">วิวล่าสุด</option>'
+        '<option value="galaxy">ล่องทางช้างเผือก</option><option value="rings">ชมวงแหวนดาว</option>'
+        '<option value="dawn">รุ่งอรุณวงโคจร</option></select></label>'
         '<div id="cabin-theme-option" hidden>'
-        '<div id="cabin-theme-links" aria-label="切换主题"></div>'
+        '<div id="cabin-theme-links" aria-label="สลับธีม"></div>'
         '<p id="cabin-theme-status" role="status" hidden></p></div></div>\n'
         '    </dialog>\n\n    <dialog class="attached-sheet session-sheet"',
         1,
@@ -95,7 +94,7 @@ def build(*, refresh_markup: bool = False) -> None:
     template = template.replace(
         '<div class="cards" id="cards"></div>',
         '<div class="cards" id="cards"></div>'
-        '<p class="carousel-empty" id="carousel-empty" hidden>导入角色后，就能在这里开始通讯。</p>',
+        '<p class="carousel-empty" id="carousel-empty" hidden>นำเข้าตัวละครแล้วจะเริ่มการสื่อสารได้ที่นี่</p>',
     )
     markup = "export const cabinMarkup = " + json.dumps(template, ensure_ascii=False) + ";\n"
     (destination / "cabin-markup.js").write_text(markup, encoding="utf-8")
@@ -130,7 +129,7 @@ def build(*, refresh_markup: bool = False) -> None:
 .window-motion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .cabin-pan { display: none; }
 .orb-perch { position: absolute; display: flex; align-items: center; gap: 12px; left: var(--sill-x); bottom: calc(100% - var(--sill) + 31px); pointer-events: none; }
-.orb-perch p { color: #f4e9de; font-size: clamp(14px, 1.28vw, 19px); letter-spacing: .08em; text-shadow: 0 1px 8px #0b0913, 0 2px 20px #0b0913; }
+.orb-perch p { color: #f4e9de; font-size: clamp(14px, 1.28vw, 19px); letter-spacing: 0; text-shadow: 0 1px 8px #0b0913, 0 2px 20px #0b0913; }
 .cabin:not([data-page="home"]) .orb-perch { display: none; }
 .library-actions { display: flex; gap: 2px; }
 #terminal::backdrop { background: transparent; }

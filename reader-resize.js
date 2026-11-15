@@ -25,9 +25,9 @@ export function mountReaderResize(shell) {
     grip.className = 'xingjian-resize-grip';
     grip.hidden = true;
     grip.tabIndex = 0;
-    grip.title = '拖动左边缘调整聊天框宽度，双击还原';
+    grip.title = 'ลากขอบซ้ายเพื่อปรับความกว้างกล่องแชต ดับเบิลคลิกเพื่อคืนค่า';
     grip.setAttribute('role', 'separator');
-    grip.setAttribute('aria-label', '调整聊天框宽度');
+    grip.setAttribute('aria-label', 'ปรับความกว้างกล่องแชต');
     grip.setAttribute('aria-orientation', 'vertical');
     grip.setAttribute('aria-controls', shell.id);
     shell.append(grip);

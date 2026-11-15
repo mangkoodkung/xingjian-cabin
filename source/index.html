@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="th">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#191720">
-    <title>星间 · 私人观景舱</title>
+    <title>ซิงเจียน · ห้องชมวิวอวกาศส่วนตัว</title>
     <style>/* CABIN_STYLE */</style>
 </head>
 <body>
@@ -47,42 +47,42 @@
             <div class="cabin-light"></div>
         </div>
 
-        <header class="cabin-mark" aria-label="星间">
+        <header class="cabin-mark" aria-label="ซิงเจียน">
             <svg aria-hidden="true"><use href="#i-orbit"/></svg>
-            <span>星间</span>
+            <span>ซิงเจียน</span>
         </header>
 
         <div class="welcome" id="welcome">
             <div class="orb" aria-hidden="true"></div>
-            <p>欢迎回来，指挥官。</p>
+            <p>ยินดีต้อนรับกลับมา ผู้บัญชาการ</p>
         </div>
 
         <main class="projection-deck" id="home" aria-labelledby="recent-title">
             <div class="projection-header">
                 <span class="projection-status" aria-hidden="true"></span>
-                <h1 id="recent-title">最近通讯</h1>
+                <h1 id="recent-title">การสื่อสารล่าสุด</h1>
                 <span class="role-position" id="role-position" aria-hidden="true"></span>
             </div>
-            <div class="carousel" id="carousel" tabindex="0" role="region" aria-label="最近角色，使用左右方向键切换">
+            <div class="carousel" id="carousel" tabindex="0" role="region" aria-label="ตัวละครล่าสุด ใช้ปุ่มลูกศรซ้าย-ขวาเพื่อสลับ">
                 <div class="projection-beam" aria-hidden="true"></div>
                 <div class="orbit-track" aria-hidden="true"></div>
                 <div class="cards" id="cards"></div>
             </div>
             <div class="role-controls">
-                <button class="holo-key direction-key" id="previous" type="button" aria-label="上一个角色" title="上一个角色">
+                <button class="holo-key direction-key" id="previous" type="button" aria-label="ตัวละครก่อนหน้า" title="ตัวละครก่อนหน้า">
                     <svg aria-hidden="true"><use href="#i-left"/></svg>
                 </button>
                 <h2 id="active-role" aria-live="polite"></h2>
-                <button class="holo-key direction-key" id="next" type="button" aria-label="下一个角色" title="下一个角色">
+                <button class="holo-key direction-key" id="next" type="button" aria-label="ตัวละครถัดไป" title="ตัวละครถัดไป">
                     <svg aria-hidden="true"><use href="#i-right"/></svg>
                 </button>
             </div>
             <div class="role-actions">
                 <button class="holo-key continue-key" id="continue-chat" type="button">
-                    <svg aria-hidden="true"><use href="#i-play"/></svg><span>继续故事</span>
+                    <svg aria-hidden="true"><use href="#i-play"/></svg><span>เล่าเรื่องต่อ</span>
                 </button>
                 <button class="holo-key" id="choose-session" type="button">
-                    <svg aria-hidden="true"><use href="#i-archive"/></svg><span>存档</span>
+                    <svg aria-hidden="true"><use href="#i-archive"/></svg><span>บันทึก</span>
                 </button>
             </div>
             <div class="emitter" aria-hidden="true"><span></span></div>
@@ -90,88 +90,88 @@
 
         <main class="panel library" id="library" hidden aria-labelledby="library-heading">
             <header class="panel-head">
-                <div><h1 id="library-heading">角色档案</h1><p id="role-count"></p></div>
-                <button class="holo-key" id="add-images" type="button"><svg aria-hidden="true"><use href="#i-plus"/></svg>添加演示图</button>
+                <div><h1 id="library-heading">คลังตัวละคร</h1><p id="role-count"></p></div>
+                <button class="holo-key" id="add-images" type="button"><svg aria-hidden="true"><use href="#i-plus"/></svg>เพิ่มรูปตัวอย่าง</button>
             </header>
             <div class="search-field">
                 <svg aria-hidden="true"><use href="#i-search"/></svg>
-                <label class="visually-hidden" for="search">搜索角色</label>
-                <input id="search" type="search" autocomplete="off" placeholder="搜索角色">
+                <label class="visually-hidden" for="search">ค้นหาตัวละคร</label>
+                <input id="search" type="search" autocomplete="off" placeholder="ค้นหาตัวละคร">
             </div>
             <div class="archive-scroll" id="archive-scroll">
                 <div class="archive-grid" id="archive-grid"></div>
-                <p class="empty-search" id="empty-search" hidden>没有找到符合的角色。</p>
+                <p class="empty-search" id="empty-search" hidden>ไม่พบตัวละครที่ตรงกัน</p>
             </div>
         </main>
 
         <main class="panel conversation" id="chat" hidden aria-labelledby="chat-role">
             <header class="panel-head chat-head">
                 <button class="holo-key" id="chat-back" type="button">
-                    <svg aria-hidden="true"><use href="#i-back"/></svg><span>返回</span>
+                    <svg aria-hidden="true"><use href="#i-back"/></svg><span>กลับ</span>
                 </button>
                 <div class="chat-heading"><h1 id="chat-role"></h1><p id="chat-title"></p></div>
                 <button class="holo-key" id="chat-sessions" type="button">
-                    <svg aria-hidden="true"><use href="#i-archive"/></svg><span>存档</span>
+                    <svg aria-hidden="true"><use href="#i-archive"/></svg><span>บันทึก</span>
                 </button>
             </header>
             <div class="log-wrap">
-                <div class="chat-log" id="chat-log" role="log" tabindex="0" aria-label="通讯记录"></div>
+                <div class="chat-log" id="chat-log" role="log" tabindex="0" aria-label="ประวัติการสื่อสาร"></div>
                 <button class="holo-key jump-key" id="jump-latest" type="button" hidden>
-                    <svg aria-hidden="true"><use href="#i-down"/></svg>最新消息
+                    <svg aria-hidden="true"><use href="#i-down"/></svg>ข้อความล่าสุด
                 </button>
             </div>
             <form class="composer" id="composer">
-                <label class="visually-hidden" for="message">演示消息</label>
-                <textarea id="message" rows="1" maxlength="4000" placeholder="写下你想说的话…" required></textarea>
-                <button class="holo-key" type="submit"><svg aria-hidden="true"><use href="#i-send"/></svg><span>发送</span></button>
+                <label class="visually-hidden" for="message">ข้อความตัวอย่าง</label>
+                <textarea id="message" rows="1" maxlength="4000" placeholder="เขียนสิ่งที่อยากพูด…" required></textarea>
+                <button class="holo-key" type="submit"><svg aria-hidden="true"><use href="#i-send"/></svg><span>ส่ง</span></button>
             </form>
         </main>
 
-        <nav class="sill-controls mounted" aria-label="舷窗控制">
+        <nav class="sill-controls mounted" aria-label="แผงควบคุมหน้าต่าง">
             <button class="cabin-key route-key" type="button" data-dialog="routes" aria-haspopup="dialog">
-                <svg aria-hidden="true"><use href="#i-orbit"/></svg><span id="route-label">银河巡航</span>
+                <svg aria-hidden="true"><use href="#i-orbit"/></svg><span id="route-label">ล่องทางช้างเผือก</span>
                 <svg class="key-chevron" aria-hidden="true"><use href="#i-down"/></svg>
             </button>
             <button class="cabin-key view-key" id="scenic" type="button" aria-pressed="false">
-                <svg aria-hidden="true"><use href="#i-window"/></svg><span>观景</span>
+                <svg aria-hidden="true"><use href="#i-window"/></svg><span>ชมวิว</span>
             </button>
         </nav>
 
-        <nav class="wall-controls mounted" id="wall-controls" aria-label="舱壁控制">
+        <nav class="wall-controls mounted" id="wall-controls" aria-label="แผงควบคุมผนังห้อง">
             <button class="cabin-key" type="button" data-page-button="home" aria-current="page">
-                <svg aria-hidden="true"><use href="#i-signal"/></svg><span>通讯舱</span>
+                <svg aria-hidden="true"><use href="#i-signal"/></svg><span>ห้องสื่อสาร</span>
             </button>
             <button class="cabin-key" type="button" data-page-button="library">
-                <svg aria-hidden="true"><use href="#i-archive"/></svg><span>全部角色</span>
+                <svg aria-hidden="true"><use href="#i-archive"/></svg><span>ตัวละคร</span>
             </button>
             <button class="cabin-key" type="button" data-dialog="terminal" aria-haspopup="dialog">
-                <svg aria-hidden="true"><use href="#i-terminal"/></svg><span>酒馆菜单</span>
+                <svg aria-hidden="true"><use href="#i-terminal"/></svg><span>เมนู</span>
             </button>
             <button class="cabin-key" type="button" data-dialog="settings" aria-haspopup="dialog">
-                <svg aria-hidden="true"><use href="#i-settings"/></svg><span>舱室设置</span>
+                <svg aria-hidden="true"><use href="#i-settings"/></svg><span>ตั้งค่าห้อง</span>
             </button>
         </nav>
     </div>
 
     <dialog class="attached-sheet route-sheet" id="routes" aria-labelledby="routes-title">
         <header class="sheet-head">
-            <h2 id="routes-title">选择航段</h2>
-            <button class="holo-key close-key" type="button" data-close aria-label="关闭航段" title="关闭"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <h2 id="routes-title">เลือกเส้นทาง</h2>
+            <button class="holo-key close-key" type="button" data-close aria-label="ปิดเส้นทาง" title="ปิด"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </header>
         <div class="route-list">
             <button class="route-option" data-route-option="galaxy" type="button" aria-pressed="true">
                 <span class="route-thumbnail thumbnail-galaxy" aria-hidden="true"></span>
-                <span>银河巡航</span>
+                <span>ล่องทางช้างเผือก</span>
                 <span class="route-dot" aria-hidden="true"></span>
             </button>
             <button class="route-option" data-route-option="rings" type="button" aria-pressed="false">
                 <span class="route-thumbnail thumbnail-rings" aria-hidden="true"></span>
-                <span>环星观景</span>
+                <span>ชมวงแหวนดาว</span>
                 <span class="route-dot" aria-hidden="true"></span>
             </button>
             <button class="route-option" data-route-option="dawn" type="button" aria-pressed="false">
                 <span class="route-thumbnail thumbnail-dawn" aria-hidden="true"></span>
-                <span>轨道晨光</span>
+                <span>รุ่งอรุณวงโคจร</span>
                 <span class="route-dot" aria-hidden="true"></span>
             </button>
         </div>
@@ -179,37 +179,37 @@
 
     <dialog class="attached-sheet" id="terminal" aria-labelledby="terminal-title">
         <header class="sheet-head">
-            <h2 id="terminal-title">酒馆菜单</h2>
-            <button class="holo-key close-key" type="button" data-close aria-label="关闭酒馆菜单" title="关闭"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <h2 id="terminal-title">เมนู</h2>
+            <button class="holo-key close-key" type="button" data-close aria-label="ปิดเมนู" title="ปิด"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </header>
         <div class="terminal-grid" id="terminal-keys"></div>
-        <p class="sheet-note" id="terminal-note" aria-live="polite">这是独立预览。接入酒馆后，这里会打开原有的功能面板。</p>
+        <p class="sheet-note" id="terminal-note" aria-live="polite">นี่คือตัวอย่างแบบแยกเดี่ยว เมื่อต่อเข้ากับ SillyTavern ตรงนี้จะเปิดแผงฟังก์ชันเดิม</p>
     </dialog>
 
     <dialog class="attached-sheet" id="settings" aria-labelledby="settings-title">
         <header class="sheet-head">
-            <h2 id="settings-title">舱室设置</h2>
-            <button class="holo-key close-key" type="button" data-close aria-label="关闭舱室设置" title="关闭"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <h2 id="settings-title">ตั้งค่าห้องโดยสาร</h2>
+            <button class="holo-key close-key" type="button" data-close aria-label="ปิดตั้งค่าห้องโดยสาร" title="ปิด"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </header>
         <div class="setting">
-            <label for="brightness">窗景亮度</label>
+            <label for="brightness">ความสว่างของวิว</label>
             <input id="brightness" type="range" min="30" max="100" value="86">
             <output id="brightness-value" for="brightness">86%</output>
         </div>
         <div class="setting">
-            <label for="still-mode">减少动效</label>
-            <button class="physical-switch" id="still-mode" type="button" role="switch" aria-checked="false" aria-label="减少动效"><span></span></button>
+            <label for="still-mode">ลดภาพเคลื่อนไหว</label>
+            <button class="physical-switch" id="still-mode" type="button" role="switch" aria-checked="false" aria-label="ลดภาพเคลื่อนไหว"><span></span></button>
         </div>
     </dialog>
 
     <dialog class="attached-sheet session-sheet" id="sessions" aria-labelledby="sessions-title">
         <header class="sheet-head">
-            <div><h2 id="sessions-title">通讯存档</h2><p id="session-role"></p></div>
-            <button class="holo-key close-key" type="button" data-close aria-label="关闭通讯存档" title="关闭"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <div><h2 id="sessions-title">บันทึกการสื่อสาร</h2><p id="session-role"></p></div>
+            <button class="holo-key close-key" type="button" data-close aria-label="ปิดบันทึกการสื่อสาร" title="ปิด"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </header>
         <div class="session-list" id="session-list"></div>
         <button class="holo-key new-session" id="new-session" type="button">
-            <svg aria-hidden="true"><use href="#i-plus"/></svg>开始新故事
+            <svg aria-hidden="true"><use href="#i-plus"/></svg>เริ่มเรื่องใหม่
         </button>
     </dialog>
 

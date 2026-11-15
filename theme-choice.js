@@ -2,8 +2,8 @@ import * as extensions from '../../../extensions.js';
 
 const preference = 'tavern-scenic-theme';
 const legacy = {
-    'forest-tavern': { id: 'forest', label: '林间拾叶', order: 10 },
-    'xingjian-cabin': { id: 'xingjian', label: '星间', order: 20 },
+    'forest-tavern': { id: 'forest', label: 'หลินเจียน', order: 10 },
+    'xingjian-cabin': { id: 'xingjian', label: 'ซิงเจียน', order: 20 },
 };
 
 export function availableThemes() {

@@ -1,7 +1,7 @@
 const preferenceKey = 'xingjian-reader-type';
 const fonts = [
-    ['system', '系统字体'], ['round', '霞鹜圆体'], ['wenkai', '霞鹜文楷'],
-    ['sans', '思源黑体'], ['serif', '思源宋体'],
+    ['system', 'ฟอนต์ระบบ'], ['round', 'LXGW 975 Yuan'], ['wenkai', 'LXGW WenKai'],
+    ['sans', 'Source Han Sans'], ['serif', 'Source Han Serif'],
 ];
 const defaults = { font: 'round', size: 17, leading: 1.85 };
 const icons = {
@@ -33,8 +33,8 @@ function readPrefs() {
 }
 
 export function mountReaderControls(shell, head, actions) {
-    const fontsKey = readerKey('font', '阅读字体', 'xingjian-font-key');
-    const toolsKey = readerKey('controls', '通讯选项', 'xingjian-tools-key');
+    const fontsKey = readerKey('font', 'ฟอนต์สำหรับอ่าน', 'xingjian-font-key');
+    const toolsKey = readerKey('controls', 'ตัวเลือกการสื่อสาร', 'xingjian-tools-key');
     const profileKey = document.createElement('button');
     profileKey.type = 'button';
     profileKey.className = 'xingjian-key xingjian-profile-key';
@@ -48,7 +48,7 @@ export function mountReaderControls(shell, head, actions) {
     header.className = 'xingjian-panel-top';
     const title = document.createElement('strong');
     title.id = 'xingjian-reader-panel-title';
-    const closeKey = readerKey('close', '收起面板', 'xingjian-panel-close');
+    const closeKey = readerKey('close', 'ซ่อนแผง', 'xingjian-panel-close');
     header.append(title, closeKey);
     const fontSheet = document.createElement('div');
     fontSheet.className = 'xingjian-font-sheet';
@@ -74,7 +74,7 @@ export function mountReaderControls(shell, head, actions) {
     let prefs = readPrefs();
     let profileName = '';
     let profileSource = '';
-    const titles = { font: '阅读字体', tools: '通讯选项' };
+    const titles = { font: 'ฟอนต์สำหรับอ่าน', tools: 'ตัวเลือกการสื่อสาร' };
     const triggers = { font: fontsKey, tools: toolsKey, profile: profileKey };
     for (const [key, trigger] of Object.entries(triggers)) {
         trigger.setAttribute('aria-controls', panel.id);
@@ -117,7 +117,7 @@ export function mountReaderControls(shell, head, actions) {
     const select = document.createElement('select');
     select.id = 'xingjian-reader-font';
     for (const [id, label] of fonts) select.add(new Option(label, id));
-    field(fontSheet, '字体', select);
+    field(fontSheet, 'ฟอนต์', select);
 
     function range(key, label, min, max, step) {
         const input = document.createElement('input');
@@ -133,12 +133,12 @@ export function mountReaderControls(shell, head, actions) {
         });
         return { input, output };
     }
-    const size = range('size', '字号', 14, 26, 1);
-    const leading = range('leading', '行距', 1.4, 2.4, .05);
+    const size = range('size', 'ขนาดตัวอักษร', 14, 26, 1);
+    const leading = range('leading', 'ระยะบรรทัด', 1.4, 2.4, .05);
     const reset = document.createElement('button');
     reset.type = 'button';
     reset.className = 'xingjian-key';
-    reset.textContent = '恢复默认';
+    reset.textContent = 'คืนค่าเริ่มต้น';
     fontSheet.append(reset);
     reset.addEventListener('click', () => {
         prefs = { ...defaults };
@@ -184,7 +184,7 @@ export function mountReaderControls(shell, head, actions) {
             profileName = name;
             profileSource = image;
             profileLabel.textContent = name;
-            profileKey.setAttribute('aria-label', '查看' + name + '的头像');
+            profileKey.setAttribute('aria-label', 'ดูรูปโปรไฟล์ของ ' + name);
             if (active === 'profile') show('profile');
         },
         tools,

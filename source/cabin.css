@@ -808,3 +808,7 @@ html[data-still="true"] dialog { animation: none !important; transition: none !i
         transition: none !important;
     }
 }
+
+/* Thai text: wide tracking pulls Thai letters apart, so headings use none. */
+.cabin-mark, .welcome p, .projection-header h1, .role-controls h2,
+.panel-head h1, .message h2, .sheet-head h2 { letter-spacing: 0; }

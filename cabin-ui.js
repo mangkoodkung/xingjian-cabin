@@ -1,18 +1,18 @@
 import { mountWindowMotion } from './window-motion.js';
 
 export const nativeMenus = [
-    ['ai-config-button', 'settings', '生成设置'],
-    ['sys-settings-button', 'plug', 'API 连接'],
-    ['advanced-formatting-button', 'text', '高级格式'],
-    ['WI-SP-button', 'book', '世界书'],
-    ['user-settings-button', 'settings', '用户设置'],
-    ['backgrounds-button', 'window', '背景'],
-    ['extensions-settings-button', 'blocks', '扩展'],
-    ['persona-management-button', 'person', '我的人设'],
-    ['rightNavHolder', 'archive', '角色管理'],
+    ['ai-config-button', 'settings', 'ตั้งค่าการสร้างข้อความ'],
+    ['sys-settings-button', 'plug', 'การเชื่อมต่อ API'],
+    ['advanced-formatting-button', 'text', 'การจัดรูปแบบขั้นสูง'],
+    ['WI-SP-button', 'book', 'ข้อมูลโลก'],
+    ['user-settings-button', 'settings', 'ตั้งค่าผู้ใช้'],
+    ['backgrounds-button', 'window', 'พื้นหลัง'],
+    ['extensions-settings-button', 'blocks', 'ส่วนขยาย'],
+    ['persona-management-button', 'person', 'เพอร์โซนาของฉัน'],
+    ['rightNavHolder', 'archive', 'จัดการตัวละคร'],
 ];
 
-const routeNames = { galaxy: '银河巡航', rings: '环星观景', dawn: '轨道晨光' };
+const routeNames = { galaxy: 'ล่องทางช้างเผือก', rings: 'ชมวงแหวนดาว', dawn: 'รุ่งอรุณวงโคจร' };
 const preferenceKey = 'xingjian-cabin-display';
 
 function element(tag, className, label) {
@@ -172,7 +172,7 @@ export function mountCabin(root, actions) {
         } catch (error) {
             if (error.name !== 'AbortError' && ambientRequested && page !== 'reading') {
                 ambientRequested = false;
-                toast('白噪音播放失败，请再点一次。');
+                toast('เล่นไวท์นอยส์ไม่สำเร็จ ลองกดอีกครั้ง');
             }
         }
     }
@@ -266,7 +266,7 @@ export function mountCabin(root, actions) {
         control.append(icon(glyph), element('span', '', label));
         control.addEventListener('click', () => {
             $('terminal').close();
-            if (!actions.openDrawer(id, label)) toast('找不到「' + label + '」面板。');
+            if (!actions.openDrawer(id, label)) toast('ไม่พบแผง「' + label + '」');
         });
         $('terminal-keys').append(control);
     }
@@ -296,7 +296,7 @@ export function mountCabin(root, actions) {
             }
         }
         $('scenic').setAttribute('aria-pressed', String(next === 'scenic'));
-        $('scenic').querySelector('span').textContent = next === 'scenic' ? '返回通讯' : '观景';
+        $('scenic').querySelector('span').textContent = next === 'scenic' ? 'กลับไปสื่อสาร' : 'ชมวิว';
         actions.pageChanged(next, previous);
         if (next === 'home') requestAnimationFrame(() => layoutCards());
     }
@@ -346,7 +346,7 @@ export function mountCabin(root, actions) {
             card.style.zIndex = String(10 - Math.round(depth * 3));
             card.tabIndex = index === activeIndex ? 0 : -1;
             card.setAttribute('aria-hidden', String(Math.abs(offset) > 1));
-            card.setAttribute('aria-label', index === activeIndex ? '打开' + recent[index].name : '切换到' + recent[index].name);
+            card.setAttribute('aria-label', index === activeIndex ? 'เปิด ' + recent[index].name : 'สลับไปที่ ' + recent[index].name);
         });
     }
 
@@ -364,7 +364,7 @@ export function mountCabin(root, actions) {
         $('next').disabled = recent.length < 2;
         $('continue-chat').disabled = !role;
         $('choose-session').disabled = !role;
-        $('continue-chat').querySelector('span').textContent = role?.hasChat ? '继续故事' : '开始故事';
+        $('continue-chat').querySelector('span').textContent = role?.hasChat ? 'เล่าเรื่องต่อ' : 'เริ่มเรื่อง';
         resetScan();
         if (role && scan && cabin.dataset.still !== 'true' && page === 'home') {
             const card = cards[activeIndex];
@@ -487,10 +487,10 @@ export function mountCabin(root, actions) {
             const entry = element('article', 'archive-card');
             const cover = element('button', 'archive-cover');
             const info = element('div', 'archive-info');
-            const sessions = element('button', 'holo-key', '存档');
+            const sessions = element('button', 'holo-key', 'บันทึก');
             putCover(cover, role, true);
-            cover.setAttribute('aria-label', '打开' + role.name);
-            sessions.setAttribute('aria-label', role.name + '的存档');
+            cover.setAttribute('aria-label', 'เปิด ' + role.name);
+            sessions.setAttribute('aria-label', 'บันทึกของ ' + role.name);
             cover.addEventListener('click', () => activate(role.id));
             sessions.addEventListener('click', () => openSessions(role.id));
             info.append(element('h2', '', role.name), sessions);
@@ -499,8 +499,8 @@ export function mountCabin(root, actions) {
         });
         $('archive-grid').replaceChildren(...list);
         $('empty-search').hidden = !!matches.length;
-        $('empty-search').textContent = catalog.length ? '没有找到符合的角色。' : '角色档案还是空的，可以先导入角色卡。';
-        $('role-count').textContent = matches.length + (query ? ' 个搜索结果' : ' 个角色');
+        $('empty-search').textContent = catalog.length ? 'ไม่พบตัวละครที่ตรงกัน' : 'คลังตัวละครยังว่างอยู่ ลองนำเข้าการ์ดตัวละครก่อน';
+        $('role-count').textContent = matches.length + (query ? ' ผลการค้นหา' : ' ตัวละคร');
     }
     $('search').addEventListener('input', () => {
         renderLibrary();
@@ -529,7 +529,7 @@ export function mountCabin(root, actions) {
             if ($('sessions').open) $('sessions').close();
             await actions.openRole(id, { file, create, origin });
         } catch (error) {
-            toast(error?.message || '没能打开通讯，请再试一次。');
+            toast(error?.message || 'เปิดการสื่อสารไม่สำเร็จ ลองอีกครั้ง');
         } finally {
             busy = false;
             $('continue-chat').removeAttribute('aria-busy');
@@ -543,7 +543,7 @@ export function mountCabin(root, actions) {
         const request = ++archiveRequest;
         archiveRole = id;
         $('session-role').textContent = role.name;
-        $('session-list').replaceChildren(element('p', 'session-empty', '正在读取存档…'));
+        $('session-list').replaceChildren(element('p', 'session-empty', 'กำลังโหลดบันทึก…'));
         $('new-session').disabled = true;
         showDialog($('sessions'));
         try {
@@ -552,17 +552,17 @@ export function mountCabin(root, actions) {
             const list = entries.map(entry => {
                 const control = element('button', 'session-item');
                 const copy = element('span');
-                copy.append(element('strong', '', entry.file + (entry.current ? ' · 最近打开' : '')));
+                copy.append(element('strong', '', entry.file + (entry.current ? ' · เปิดล่าสุด' : '')));
                 copy.append(element('small', '', entry.detail));
                 control.append(copy, icon('right'));
                 control.addEventListener('click', () => activate(id, entry.file));
                 return control;
             });
-            $('session-list').replaceChildren(...(list.length ? list : [element('p', 'session-empty', '还没有存档。')]));
+            $('session-list').replaceChildren(...(list.length ? list : [element('p', 'session-empty', 'ยังไม่มีบันทึก')]));
             $('new-session').disabled = false;
         } catch {
             if (request === archiveRequest && $('sessions').open) {
-                $('session-list').replaceChildren(element('p', 'session-empty', '读取存档失败，请重新打开。'));
+                $('session-list').replaceChildren(element('p', 'session-empty', 'โหลดบันทึกไม่สำเร็จ ลองเปิดใหม่อีกครั้ง'));
             }
         }
     }

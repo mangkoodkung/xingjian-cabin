@@ -66,16 +66,16 @@ async function mount() {
     document.body.append(host);
     if (!await loaded) {
         host.remove();
-        console.error('星间无法加载舱室样式。');
+        console.error('Xingjian: โหลดสไตล์ห้องโดยสารไม่สำเร็จ');
         return;
     }
 
     const head = document.createElement('header');
     head.className = 'xingjian-reader-head';
     head.hidden = true;
-    const back = readerKey('disconnect', '退出通讯', 'xingjian-disconnect');
+    const back = readerKey('disconnect', 'ออกจากการสื่อสาร', 'xingjian-disconnect');
     const backLabel = document.createElement('span');
-    backLabel.textContent = '退出通讯';
+    backLabel.textContent = 'ออกจากการสื่อสาร';
     back.append(backLabel);
     const identity = document.createElement('div');
     identity.className = 'xingjian-reader-identity';
@@ -101,7 +101,7 @@ async function mount() {
     name.className = 'xingjian-reader-name';
     const status = document.createElement('span');
     status.className = 'xingjian-reader-status';
-    status.textContent = '通讯中';
+    status.textContent = 'กำลังสื่อสาร';
     headingCopy.append(name, status);
     identity.append(profile, headingCopy);
     const headerActions = document.createElement('div');
@@ -112,10 +112,10 @@ async function mount() {
     const readerFrame = mountReaderFrame(shell, form, profile);
     const readerResize = mountReaderResize(shell);
     const reader = mountReaderControls(shell, head, [
-        ['connection', 'API 连接', () => openDrawer('sys-settings-button', 'API 连接')],
-        ['persona', '我的人设', () => openDrawer('persona-management-button', '我的人设')],
-        ['sessions', '通讯存档', openSessions],
-        ['tools', '显示附加工具', toggleAddons, true],
+        ['connection', 'การเชื่อมต่อ API', () => openDrawer('sys-settings-button', 'การเชื่อมต่อ API')],
+        ['persona', 'เพอร์โซนาของฉัน', () => openDrawer('persona-management-button', 'เพอร์โซนาของฉัน')],
+        ['sessions', 'บันทึกการสื่อสาร', openSessions],
+        ['tools', 'แสดงเครื่องมือเสริม', toggleAddons, true],
     ]);
     headingCopy.append(reader.profileKey);
     const addons = reader.tools.get('tools');
@@ -136,7 +136,7 @@ async function mount() {
     const ui = mountCabin(shadow, {
         openDrawer, closeDrawer, openRole, readSessions, pageChanged,
         importRole: () => {
-            openDrawer('rightNavHolder', '角色管理');
+            openDrawer('rightNavHolder', 'จัดการตัวละคร');
             $('character_import_button')?.click();
         },
     });
@@ -149,10 +149,10 @@ async function mount() {
         button.type = 'button';
         button.className = 'holo-key';
         button.dataset.scenicTheme = id;
-        button.textContent = '前往' + label;
+        button.textContent = 'ไปที่ ' + label;
         button.addEventListener('click', () => {
-            if (isGenerating()) themeStatus.textContent = '回复结束后就可以切换。';
-            else if (!switchTheme(id)) themeStatus.textContent = '主题不可用，或暂时无法保存选择。';
+            if (isGenerating()) themeStatus.textContent = 'สลับได้หลังตอบกลับเสร็จ';
+            else if (!switchTheme(id)) themeStatus.textContent = 'ใช้ธีมนี้ไม่ได้ หรือยังบันทึกตัวเลือกไม่ได้ในตอนนี้';
             else return;
             themeStatus.hidden = false;
         });
@@ -171,7 +171,7 @@ async function mount() {
     function setAddons(open) {
         shell.classList.toggle('xingjian-show-addons', open);
         addons.setAttribute('aria-pressed', String(open));
-        addons.textContent = open ? '收起附加工具' : '显示附加工具';
+        addons.textContent = open ? 'ซ่อนเครื่องมือเสริม' : 'แสดงเครื่องมือเสริม';
         refreshFloatingTools();
     }
     function toggleAddons() { setAddons(!shell.classList.contains('xingjian-show-addons')); }
@@ -245,8 +245,8 @@ async function mount() {
         markAddons();
     }
     const input = $('send_textarea');
-    const connectedPrompt = '输入通讯内容';
-    const offlinePrompt = '尚未连接 API';
+    const connectedPrompt = 'พิมพ์ข้อความ';
+    const offlinePrompt = 'ยังไม่ได้เชื่อมต่อ API';
     function updateInputPrompt(reading) {
         if (!input) return;
         const connected = input.getAttribute('connected_text');
@@ -263,7 +263,7 @@ async function mount() {
 
     function updateReader() {
         const details = getCurrentChatDetails();
-        const displayName = details.characterName || '通讯记录';
+        const displayName = details.characterName || 'ประวัติการสื่อสาร';
         const groupImage = details.group && details.avatarImgURL;
         const image = groupImage && groupImage !== 'none' ? groupImage : characterImage(details.group ? null : characters[this_chid]);
         if (portrait.getAttribute('src') !== image) portrait.src = image;
@@ -272,7 +272,7 @@ async function mount() {
         headingCopy.title = displayName;
         reader.setProfile(displayName, image);
         const sessions = reader.tools.get('sessions');
-        sessions.title = details.sessionName || '通讯存档';
+        sessions.title = details.sessionName || 'บันทึกการสื่อสาร';
         sessions.disabled = !(details.characterName || details.group);
         const session = JSON.stringify([details.group?.id, characters[this_chid]?.avatar, details.sessionName]);
         const changed = readerSession !== session;
@@ -336,7 +336,7 @@ async function mount() {
             heading.className = 'xingjian-drawer-heading';
             const title = document.createElement('strong');
             title.textContent = label;
-            const close = nativeButton('xingjian-key', 'xmark', '关闭');
+            const close = nativeButton('xingjian-key', 'xmark', 'ปิด');
             close.addEventListener('click', closeDrawer);
             heading.append(title, close);
             panel.prepend(heading);
@@ -353,11 +353,11 @@ async function mount() {
     function syncCatalog() {
         const items = characters.filter(role => role?.avatar).map(role => ({
             id: role.avatar,
-            name: role.name || '未命名角色',
+            name: role.name || 'ตัวละครไม่มีชื่อ',
             image: characterImage(role),
             hasChat: Number(role.date_last_chat) > 0 || visited.has(role.avatar),
             activity: Math.max(Number(role.date_last_chat) || 0, visited.get(role.avatar) || 0),
-        })).sort((left, right) => right.activity - left.activity || left.name.localeCompare(right.name, 'zh-CN'));
+        })).sort((left, right) => right.activity - left.activity || left.name.localeCompare(right.name, 'th'));
         const signature = JSON.stringify(items);
         if (signature === catalogSignature) return;
         catalogSignature = signature;
@@ -378,7 +378,7 @@ async function mount() {
 
     async function readSessions(id) {
         const index = roleIndex(id);
-        if (index === -1) throw new Error('角色已不在档案中。');
+        if (index === -1) throw new Error('ตัวละครนี้ไม่อยู่ในคลังแล้ว');
         const current = chatFile(characters[index].chat);
         const sessions = await getPastCharacterChats(index);
         return sessions.filter(session => typeof session.file_name === 'string')
@@ -386,26 +386,26 @@ async function mount() {
             .map(session => ({
                 file: chatFile(session.file_name),
                 detail: String(session.mes || session.preview_message || '').replace(/\s+/g, ' ').trim().slice(0, 100) ||
-                    (Number(session.chat_items) > 0 ? session.chat_items + ' 条消息' : '暂无消息预览'),
+                    (Number(session.chat_items) > 0 ? session.chat_items + ' ข้อความ' : 'ยังไม่มีตัวอย่างข้อความ'),
                 current: current === chatFile(session.file_name),
             }));
     }
 
     async function openRole(id, { file, create, origin }) {
         let index = roleIndex(id);
-        if (index === -1) throw new Error('角色已不在档案中。');
-        if (isGenerating()) throw new Error('当前回复还在生成，请稍后再切换。');
+        if (index === -1) throw new Error('ตัวละครนี้ไม่อยู่ในคลังแล้ว');
+        if (isGenerating()) throw new Error('กำลังสร้างคำตอบอยู่ รอสักครู่แล้วค่อยสลับ');
         archiveOpening = true;
         try {
             const archives = (file || create) ? await getPastCharacterChats(index) : [];
             if (file && !archives.some(session => chatFile(session.file_name) === file)) {
-                throw new Error('找不到这份存档，请重新打开存档列表。');
+                throw new Error('ไม่พบบันทึกนี้ ลองเปิดรายการบันทึกใหม่');
             }
             index = roleIndex(id);
-            if (index === -1) throw new Error('角色已不在档案中。');
+            if (index === -1) throw new Error('ตัวละครนี้ไม่อยู่ในคลังแล้ว');
             await selectCharacterById(index, { switchMenu: false });
             if (characters[this_chid]?.avatar !== id || getCurrentChatDetails().group) {
-                throw new Error('酒馆正在保存或切换，请稍后重试。');
+                throw new Error('SillyTavern กำลังบันทึกหรือสลับอยู่ รอสักครู่แล้วลองใหม่');
             }
             if (create && archives.length) await doNewChat();
             else if (file && getCurrentChatDetails().sessionName !== file) await openCharacterChat(file);
@@ -452,7 +452,7 @@ async function mount() {
         updateInputPrompt(ui.page === 'reading');
         if (ui.page === 'reading') reader.dockCardTools();
         for (const [id, label] of [
-            ['options_button', '通讯菜单'], ['send_but', '发送通讯'], ['extensionsMenuButton', '扩展工具'],
+            ['options_button', 'เมนูการสื่อสาร'], ['send_but', 'ส่งข้อความ'], ['extensionsMenuButton', 'เครื่องมือส่วนขยาย'],
         ]) {
             const key = $(id);
             if (!key) continue;
@@ -468,7 +468,7 @@ eventSource.on(event_types.APP_INITIALIZED, async () => {
     try {
         await mount();
     } catch (error) {
-        console.error('星间启动失败', error);
+        console.error('Xingjian: เริ่มทำงานไม่สำเร็จ', error);
     } finally {
         delete document.body.dataset.xingjianStarting;
     }

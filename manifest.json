@@ -1,11 +1,11 @@
 {
-    "display_name": "星间 · 私人观景舱",
+    "display_name": "ซิงเจียน · ห้องชมวิวอวกาศส่วนตัว",
     "loading_order": 100,
     "requires": [],
     "optional": [],
     "js": "index.js",
     "css": "tavern.css",
-    "author": "lanjiu",
+    "author": "lanjiu · แปลไทยโดย mangkoodkung",
     "version": "0.6.0",
-    "scenic_theme": { "id": "xingjian", "label": "星间", "order": 20 }
+    "scenic_theme": { "id": "xingjian", "label": "ซิงเจียน", "order": 20 }
 }

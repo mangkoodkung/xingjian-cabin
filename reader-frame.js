@@ -33,13 +33,14 @@ function readoutTracks(width, height, cut, step) {
 }
 
 function drawConnector(parts, profile, joint) {
+    const start = .5;
     const x = profile.offsetLeft + profile.offsetWidth - 2;
-    const y = joint - 32;
-    const elbow = -31;
-    const d = `M 1 ${joint} L ${elbow} ${y} H ${x}`;
+    const elbow = start + (x - start) * .55;
+    const y = joint - 14;
+    const d = `M ${start} ${joint} L ${elbow} ${y} H ${x}`;
     parts.link.setAttribute('d', d);
     parts.glow.setAttribute('d', d);
-    parts.joint.setAttribute('transform', `translate(1 ${joint})`);
+    parts.joint.setAttribute('transform', `translate(${start} ${joint})`);
     parts.tip.setAttribute('transform', `translate(${x} ${y})`);
 }
 
@@ -109,7 +110,7 @@ export function mountReaderFrame(shell, form, profile) {
         const { clientWidth: width, clientHeight: height } = glass;
         if (!width || height < 62) return;
         const compact = width < 465;
-        const joint = shell.dataset.xingjianProfile === 'outside' ? profile.offsetTop + 53 : null;
+        const joint = shell.dataset.xingjianProfile === 'outside' ? profile.offsetTop + 43 : null;
         const signature = [width, height, joint, joint === null ? 0 : profile.offsetLeft].join(':');
         if (lastFrame === signature) return;
         lastFrame = signature;
@@ -117,8 +118,8 @@ export function mountReaderFrame(shell, form, profile) {
         const cut = compact ? 11 : 19;
         const step = compact ? 4 : 7;
         paths.tint.setAttribute('d', readerOutline(width, height, cut, step));
-        paths.edge.setAttribute('d', readerOutline(width, height, cut, step, 0, joint));
-        paths.inset.setAttribute('d', readerOutline(width, height, cut - 2, step, 4, joint));
+        paths.edge.setAttribute('d', readerOutline(width, height, cut, step, 0));
+        paths.inset.setAttribute('d', readerOutline(width, height, cut - 2, step, 4));
         paths.tracks.setAttribute('d', readoutTracks(width, height, cut, step));
         if (joint !== null) drawConnector(paths, profile, joint);
     }

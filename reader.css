@@ -57,30 +57,18 @@ body[data-xingjian-mode="reading"] #send_form {
     margin-inline-end: 3px;
     color: #dfc8b2;
 }
-.xingjian-reader-head .xingjian-profile-key {
-    display: none;
-    max-width: 100%;
-    justify-content: flex-start;
-    gap: 9px;
-    padding-inline: 5px;
-    color: var(--xingjian-ink);
-    font-size: 15px;
-    font-weight: 550;
-    letter-spacing: .05em;
-}
+.xingjian-reader-head .xingjian-profile-key { display: none; }
 .xingjian-reader-head .xingjian-profile-key::after {
     content: "";
-    width: 13px;
-    height: 12px;
+    width: 7px;
+    height: 7px;
     flex: 0 0 auto;
-    color: #d3b9e5;
-    background:
-        radial-gradient(circle, currentColor 0 1px, transparent 1.5px) center / 100% 100%,
-        linear-gradient(currentColor, currentColor) left top / 4px 1px,
-        linear-gradient(currentColor, currentColor) top left / 1px 4px,
-        linear-gradient(currentColor, currentColor) right bottom / 4px 1px,
-        linear-gradient(currentColor, currentColor) bottom right / 1px 4px;
-    background-repeat: no-repeat;
+    border: solid currentColor;
+    border-width: 0 1px 1px 0;
+    transform: translateY(-2px) rotate(45deg);
+}
+.xingjian-reader-head .xingjian-profile-key[aria-expanded="true"]::after {
+    transform: translateY(2px) rotate(225deg);
 }
 
 .xingjian-reader-panel {
@@ -111,21 +99,11 @@ body[data-xingjian-mode="reading"] #send_form {
     font-size: 13px;
     letter-spacing: .08em;
 }
-.xingjian-reader-panel:has(.xingjian-profile-sheet:not([hidden])) { width: min(260px, calc(100% - 24px)); }
-.xingjian-profile-sheet {
-    display: grid;
-    place-items: center;
-    margin: 0;
-    padding: 10px 5px 3px;
-    background: radial-gradient(ellipse at center, #a17bc024, transparent 70%);
-}
-.xingjian-profile-sheet img {
-    display: block;
-    max-width: 100%;
-    max-height: min(300px, 48dvh);
-    border: 1px solid #e3c8f17a;
-    clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
-    object-fit: contain;
+.xingjian-reader-head .xingjian-profile-sheet { display: none; }
+.xingjian-reader-panel:has(.xingjian-font-sheet:not([hidden])) {
+    color: #f7f1ed;
+    background: #1b1825;
+    border-color: #897494;
 }
 .xingjian-font-sheet { display: grid; gap: 8px; }
 .xingjian-font-sheet > button { justify-self: end; }
@@ -136,23 +114,39 @@ body[data-xingjian-mode="reading"] #send_form {
     align-items: center;
     gap: 5px;
     padding-inline: 6px;
-    color: #eee4f3;
+    color: #f7f1ed;
     font-size: 13px;
 }
 .xingjian-font-setting select {
     grid-column: span 2;
     min-height: 36px;
     min-width: 0;
-    color: #f1e8f3;
-    background: #292135;
-    border: 1px solid #ccb6e65c;
+    color: #fff8ff;
+    background: #282637;
+    border: 1px solid #8d7ba3;
     border-radius: 3px;
     padding-inline: 7px;
     font: inherit;
     color-scheme: dark;
 }
-.xingjian-font-setting input[type="range"] { min-width: 0; width: 100%; margin: 0; accent-color: #cfb9e7; }
-.xingjian-font-setting output { color: #d2bde2; text-align: end; font-variant-numeric: tabular-nums; }
+.xingjian-font-setting input[type="range"] {
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    background: #7e6b93;
+    accent-color: #e6d2fc;
+    box-shadow: none;
+    filter: none;
+}
+.xingjian-font-setting input[type="range"]::-webkit-slider-thumb {
+    background: #ead8ff;
+    border-color: #433551;
+}
+.xingjian-font-setting input[type="range"]::-moz-range-thumb {
+    background: #ead8ff;
+    border: 2px solid #433551;
+}
+.xingjian-font-setting output { color: #e1d6ee; text-align: end; font-variant-numeric: tabular-nums; }
 .xingjian-tool-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .xingjian-reader-panel .xingjian-tool {
     justify-content: flex-start;
@@ -200,56 +194,100 @@ body[data-xingjian-mode="reading"] #sheld :is(#chat > .mes, #send_form) {
     --reasoning-body-color: var(--xingjian-muted);
     --reasoning-em-color: var(--xingjian-em);
 }
-body[data-xingjian-mode="reading"] #sheld #chat > .mes[data-xingjian-transcript] {
-    --xingjian-speaker: #dcc8f0;
-    --xingjian-signal: #c8aee5a6;
-    --xingjian-speaker-line: #c8aee52e;
-    width: 100%;
+/* Keep the communications frame outside the role card's own markup. */
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) {
+    --xingjian-speaker: #eed6ff;
+    --xingjian-signal: #c88de7;
+    --xingjian-frame-line: #9673ad;
+    --xingjian-message-plate: linear-gradient(130deg, #302239ef, #211b2beb 72%);
+    --xingjian-message-cut: 0 11px, 11px 0, calc(100% - 13px) 0, 100% 13px,
+        100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px);
     box-sizing: border-box;
-    padding: 12px 0 14px;
+    isolation: isolate;
+    width: 96%;
+    margin: 0 auto 15px 0;
+    padding: 10px clamp(11px, 1.5vw, 20px) 12px;
     border: 0;
     border-radius: 0;
+    background: transparent;
+    color: #f8f1ed;
 }
-body[data-xingjian-mode="reading"] #sheld #chat > .mes[data-xingjian-transcript]:not(.selected) { background: transparent; }
-body[data-xingjian-mode="reading"] #sheld #chat > .mes[data-xingjian-transcript][is_user="true"] {
-    --xingjian-speaker: #f2d6bb;
-    --xingjian-signal: #deb495aa;
-    --xingjian-speaker-line: #deb49539;
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"])::before,
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"])::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(var(--xingjian-message-cut));
+    pointer-events: none;
 }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mesAvatarWrapper { display: none; }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block { padding-inline-start: 0; }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block > .ch_name {
-    min-height: 21px;
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"])::before {
+    z-index: -2;
+    background: linear-gradient(90deg, var(--xingjian-signal) 0 3px, var(--xingjian-frame-line) 3px);
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"])::after {
+    z-index: -1;
+    inset: 1px;
+    background: var(--xingjian-message-plate);
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user="true"]:not([is_system="true"]) {
+    --xingjian-speaker: #bcf1fa;
+    --xingjian-signal: #92e1f4;
+    --xingjian-frame-line: #6ba8ba;
+    --xingjian-message-plate: linear-gradient(140deg, #1d3744, #18242f 75%);
+    width: fit-content;
+    min-width: min(190px, 85%);
+    max-width: 91%;
+    margin-inline: auto 0;
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user="true"]:not([is_system="true"])::before {
+    background: linear-gradient(270deg, var(--xingjian-signal) 0 3px, var(--xingjian-frame-line) 3px);
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user].selected:not([is_system="true"]) {
+    --xingjian-frame-line: #f5b9a8;
+    --xingjian-message-plate: linear-gradient(140deg, #462c3b, #332532);
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mesAvatarWrapper { display: none; }
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block {
+    min-width: 0;
+    margin-inline: 0;
+    padding-inline-start: 0;
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .ch_name {
+    min-height: 24px;
+    margin-bottom: 5px;
     padding-inline: 1px;
     align-items: center;
+    gap: 4px;
     color: var(--xingjian-speaker);
     font-family: var(--xingjian-system);
-    background: linear-gradient(90deg, var(--xingjian-speaker-line) 5%, transparent 85%) left bottom / 100% 1px no-repeat;
+    background: linear-gradient(90deg, var(--xingjian-frame-line), transparent 92%) left bottom / 100% 1px no-repeat;
 }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block > .ch_name .name_text {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    padding: 0 1px 4px;
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .ch_name .name_text {
+    display: inline-flex !important;
+    align-items: baseline;
+    gap: 6px;
+    padding-bottom: 4px;
     color: var(--xingjian-speaker);
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: .07em;
+    line-height: 1.35;
+    letter-spacing: .04em;
 }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block > .ch_name .name_text::before {
-    content: "";
-    width: 17px;
-    height: 8px;
-    flex: 0 0 auto;
-    background: var(--xingjian-signal);
-    clip-path: polygon(0 50%, 4px 1px, 8px 1px, 12px 3.5px, 100% 3.5px, 100% 4.5px, 12px 4.5px,
-        8px 7px, 4px 7px, 0 50%, 2px 50%, 5px 6px, 7px 6px, 10px 4px, 7px 2px, 5px 2px, 2px 50%);
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .ch_name .name_text::before {
+    content: "รับ ·";
+    flex: none;
+    font-size: 11px;
 }
-body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block > .ch_name .timestamp {
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user="true"]:not([is_system="true"]) > .mes_block > .ch_name .name_text::before { content: "ส่ง ·"; }
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .ch_name .timestamp {
     margin-inline-start: 4px;
+    color: #c4b9d2;
     font-size: 10px;
-    opacity: .76;
     font-variant-numeric: tabular-nums;
+}
+body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .mes_text {
+    margin-inline: 0;
+    padding-inline: 0;
 }
 body[data-xingjian-mode="reading"] #sheld #chat > [data-xingjian-transcript] > .mes_block > .mes_text {
     color: var(--xingjian-ink);
@@ -391,12 +429,49 @@ body[data-xingjian-mode="reading"] #sheld #nonQRFormItems :is(#options_button, #
         min-height: 43px;
     }
     .xingjian-disconnect span { display: none; }
-    body[data-xingjian-mode="reading"] #sheld #chat > .mes[data-xingjian-transcript] { padding-block: 9px 11px; }
 }
 
 @media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
-    .xingjian-reader-head :is(.xingjian-reader-name, .xingjian-reader-profile) { display: none; }
-    .xingjian-reader-head .xingjian-profile-key { display: inline-flex; }
+    .xingjian-reader-head:has(.xingjian-profile-sheet:not([hidden])) { flex-wrap: wrap; }
+    .xingjian-reader-head .xingjian-reader-profile { flex-basis: 32px; width: 32px; height: 36px; }
+    .xingjian-reader-head .xingjian-reader-profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 32%;
+        mask-image: none;
+    }
+    .xingjian-reader-head .xingjian-reader-name { font-size: 12px; }
+    .xingjian-reader-head .xingjian-reader-copy .xingjian-reader-status { display: block; color: #ddc6ac; font-size: 10px; line-height: 1.25; }
+    .xingjian-reader-head .xingjian-profile-key {
+        display: inline-flex;
+        justify-content: space-between;
+        min-height: 41px;
+        padding: 0 5px;
+        gap: 5px;
+        color: #f1dac4;
+        font-size: 11px;
+    }
+    .xingjian-reader-head .xingjian-profile-sheet:not([hidden]) {
+        display: grid;
+        flex: 1 0 100%;
+        place-items: center;
+        margin: 0;
+        padding: 4px 5px 7px;
+        border-bottom: 1px solid #c8b7df59;
+        background: radial-gradient(ellipse at center, #47335388, transparent 72%);
+    }
+    .xingjian-profile-sheet img {
+        display: block;
+        width: min(100%, 218px);
+        height: clamp(130px, 30dvh, 280px);
+        object-fit: cover;
+        object-position: center 22%;
+        mask-image: linear-gradient(#000 86%, transparent 100%);
+    }
+    body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) { width: 100%; }
+    body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user="true"]:not([is_system="true"]) { width: fit-content; }
+    body[data-xingjian-mode="reading"] #sheld #chat > .mes[is_user]:not([is_system="true"]) > .mes_block > .ch_name .timestamp { display: none; }
     body[data-xingjian-mode="reading"] #sheld :is(#leftSendForm, #rightSendForm) { flex-wrap: nowrap; padding-inline: 0; }
     body[data-xingjian-mode="reading"] #sheld #nonQRFormItems :is(#options_button, #extensionsMenuButton, #send_but) {
         width: 42px;

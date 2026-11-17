@@ -18,9 +18,8 @@ function saveWidth(value) {
     }
 }
 
-export function mountReaderResize(shell) {
+export function mountReaderResize(shell, profile) {
     const compact = matchMedia('(max-width: 760px), (max-height: 500px) and (pointer: coarse)');
-    const wideViewport = matchMedia('(min-width: 1060px)');
     const grip = document.createElement('div');
     grip.className = 'xingjian-resize-grip';
     grip.hidden = true;
@@ -39,11 +38,8 @@ export function mountReaderResize(shell) {
     let drag;
 
     function showWidth() {
-        const { width, left } = shell.getBoundingClientRect();
+        const { width } = shell.getBoundingClientRect();
         grip.setAttribute('aria-valuenow', String(Math.round(width)));
-        // Reserve room for the 190px portrait, 62px connector and a 14px margin.
-        const outside = wideViewport.matches && left >= 266;
-        shell.dataset.xingjianProfile = outside ? 'outside' : 'inline';
         return width;
     }
 
@@ -54,9 +50,10 @@ export function mountReaderResize(shell) {
             shell.dataset.xingjianProfile = 'inline';
             return;
         }
+        shell.dataset.xingjianProfile = 'outside';
         const right = shell.getBoundingClientRect().right;
-        const leftLimit = 24;
-        min = Math.round(Math.min(360, right - 24));
+        const leftLimit = 24 - profile.offsetLeft;
+        min = Math.round(Math.min(360, right - leftLimit));
         max = Math.round(Math.min(1180, Math.max(min, right - leftLimit)));
         shell.style.setProperty('--xingjian-resize-min', min + 'px');
         shell.style.setProperty('--xingjian-resize-max', max + 'px');
@@ -115,7 +112,6 @@ export function mountReaderResize(shell) {
     });
 
     compact.addEventListener('change', sync);
-    wideViewport.addEventListener('change', sync);
     // Also track width changes from the original reading tools.
     new ResizeObserver(() => {
         if (!grip.hidden) showWidth();

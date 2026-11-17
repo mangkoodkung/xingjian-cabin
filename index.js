@@ -6,9 +6,9 @@ import { eventSource, event_types } from '../../../events.js';
 import { openWelcomeScreen } from '../../../welcome-screen.js';
 import { cabinMarkup } from './cabin-markup.js?v=0.6.0';
 import { mountCabin } from './cabin-ui.js?v=0.5.0';
-import { mountReaderFrame } from './reader-frame.js';
-import { mountReaderResize } from './reader-resize.js?v=0.5.0';
-import { mountReaderControls, readerKey, watchTranscript } from './reader-ui.js?v=0.5.2';
+import { mountReaderFrame } from './reader-frame.js?v=0.6.1';
+import { mountReaderResize } from './reader-resize.js?v=0.6.1';
+import { mountReaderControls, readerKey, watchTranscript } from './reader-ui.js?v=0.6.1';
 import { activeTheme, availableThemes, switchTheme } from './theme-choice.js?v=1';
 
 const $ = id => document.getElementById(id);
@@ -110,14 +110,14 @@ async function mount() {
     shell.prepend(head);
 
     const readerFrame = mountReaderFrame(shell, form, profile);
-    const readerResize = mountReaderResize(shell);
+    const readerResize = mountReaderResize(shell, profile);
     const reader = mountReaderControls(shell, head, [
         ['connection', 'การเชื่อมต่อ API', () => openDrawer('sys-settings-button', 'การเชื่อมต่อ API')],
         ['persona', 'เพอร์โซนาของฉัน', () => openDrawer('persona-management-button', 'เพอร์โซนาของฉัน')],
         ['sessions', 'บันทึกการสื่อสาร', openSessions],
         ['tools', 'แสดงเครื่องมือเสริม', toggleAddons, true],
     ]);
-    headingCopy.append(reader.profileKey);
+    identity.append(reader.profileKey);
     const addons = reader.tools.get('tools');
     addons.setAttribute('aria-pressed', 'false');
     addons.hidden = true;

@@ -39,6 +39,7 @@ export function mountReaderControls(shell, head, actions) {
     profileKey.type = 'button';
     profileKey.className = 'xingjian-key xingjian-profile-key';
     const profileLabel = document.createElement('span');
+    profileLabel.textContent = 'ดูรูป';
     profileKey.append(profileLabel);
     const panel = document.createElement('section');
     panel.className = 'xingjian-reader-panel';
@@ -54,6 +55,8 @@ export function mountReaderControls(shell, head, actions) {
     fontSheet.className = 'xingjian-font-sheet';
     const profileSheet = document.createElement('figure');
     profileSheet.className = 'xingjian-profile-sheet';
+    profileSheet.id = 'xingjian-profile-sheet';
+    profileSheet.hidden = true;
     const profileImage = document.createElement('img');
     profileImage.alt = '';
     profileImage.decoding = 'async';
@@ -67,36 +70,56 @@ export function mountReaderControls(shell, head, actions) {
     cardTools.className = 'xingjian-card-tools';
     toolSheet.append(toolList, cardTools);
     panel.setAttribute('aria-labelledby', title.id);
-    panel.append(header, fontSheet, profileSheet, toolSheet);
-    head.append(panel);
+    panel.append(header, fontSheet, toolSheet);
+    head.append(panel, profileSheet);
 
     let active = '';
     let prefs = readPrefs();
-    let profileName = '';
     let profileSource = '';
+    let profileScrollFrame;
     const titles = { font: 'ฟอนต์สำหรับอ่าน', tools: 'ตัวเลือกการสื่อสาร' };
+    const chat = shell.querySelector('#chat');
     const triggers = { font: fontsKey, tools: toolsKey, profile: profileKey };
     for (const [key, trigger] of Object.entries(triggers)) {
-        trigger.setAttribute('aria-controls', panel.id);
+        trigger.setAttribute('aria-controls', key === 'profile' ? profileSheet.id : panel.id);
         trigger.setAttribute('aria-expanded', 'false');
         trigger.addEventListener('click', () => show(active === key ? '' : key));
     }
-    function show(next, { restoreFocus = false } = {}) {
+    function show(next, { restoreFocus = false, preserveScroll = true } = {}) {
         const previous = active;
         active = next;
-        panel.hidden = !next;
+        const profileChanged = (previous === 'profile') !== (next === 'profile');
+        if (profileChanged || !preserveScroll) cancelAnimationFrame(profileScrollFrame);
+        const keepPosition = profileChanged && preserveScroll;
+        const scrollTop = keepPosition ? chat.scrollTop : 0;
+        const wasAtEnd = keepPosition && chat.scrollHeight - chat.clientHeight - scrollTop <= 2;
+        panel.hidden = next !== 'font' && next !== 'tools';
         fontSheet.hidden = next !== 'font';
         profileSheet.hidden = next !== 'profile';
         toolSheet.hidden = next !== 'tools';
-        title.textContent = next === 'profile' ? profileName : titles[next] ?? '';
+        title.textContent = titles[next] ?? '';
         if (next === 'profile' && profileImage.getAttribute('src') !== profileSource) profileImage.src = profileSource;
+        profileLabel.textContent = next === 'profile' ? 'ซ่อนรูป' : 'ดูรูป';
         for (const [key, trigger] of Object.entries(triggers)) trigger.setAttribute('aria-expanded', String(next === key));
+        if (keepPosition) {
+            const restorePosition = () => { chat.scrollTop = wasAtEnd ? chat.scrollHeight : scrollTop; };
+            restorePosition();
+            // The native chat resize observer also adjusts scroll when the reader changes height.
+            profileScrollFrame = requestAnimationFrame(() => {
+                profileScrollFrame = requestAnimationFrame(restorePosition);
+            });
+        }
         if (restoreFocus && previous) triggers[previous].focus({ preventScroll: true });
     }
 
     closeKey.addEventListener('click', () => show('', { restoreFocus: true }));
     document.addEventListener('pointerdown', event => {
-        if (active && !event.composedPath().some(node => node === panel || node === triggers[active])) show('');
+        if (!active || active === 'profile') return;
+        if (!event.composedPath().some(node => node === panel || node === triggers[active])) show('');
+    });
+    const compact = matchMedia('(max-width: 760px), (max-height: 500px) and (pointer: coarse)');
+    compact.addEventListener('change', () => {
+        if (!compact.matches && active === 'profile') show('');
     });
     head.addEventListener('keydown', event => {
         if (event.key !== 'Escape' || !active) return;
@@ -181,14 +204,12 @@ export function mountReaderControls(shell, head, actions) {
         keys: [fontsKey, toolsKey],
         profileKey,
         setProfile(name, image) {
-            profileName = name;
             profileSource = image;
-            profileLabel.textContent = name;
-            profileKey.setAttribute('aria-label', 'ดูรูปโปรไฟล์ของ ' + name);
-            if (active === 'profile') show('profile');
+            profileImage.alt = name;
+            if (active === 'profile' && profileImage.getAttribute('src') !== image) profileImage.src = image;
         },
         tools,
-        close: () => show(''),
+        close: () => show('', { preserveScroll: false }),
         dockCardTools() {
             const nav = shell.querySelector('.qinghe-reader-bar');
             if (nav && nav.parentElement !== cardTools) cardTools.append(nav);
